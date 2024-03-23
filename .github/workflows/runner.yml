@@ -95,7 +95,7 @@ jobs:
         working-directory: ./worker
         run: |
           touch .env
-          WORKER_NAME="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref }}"  
+          WORKER_NAME="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref_name }}"  
           export WORKER_NAME=$(echo $WORKER_NAME | sed 's/\//-/g')
 
           # export WORKER_NAME=$WORKER_NAME
