@@ -24,8 +24,8 @@ jobs:
       max-parallel: 2
       fail-fast: false
       matrix:
-        org: ["hive2024"]
-        repo: ["hive2024"]
+        org: ["colony2024"] #colony2023
+        repo: ["a"]
 
     runs-on: ubuntu-latest
 
