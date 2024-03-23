@@ -92,6 +92,7 @@ jobs:
           check-latest: true
 
       - name: Set Worker Name
+        shell: bash
         working-directory: ./worker
         run: |
           touch .env
@@ -107,12 +108,14 @@ jobs:
 
           echo WorkerName=$WORKER_NAME
 
-      - name: Run Worker
-        working-directory: ./worker
+      - name: Runner
         run: |
-          just setup
-          just
+          just boot-worker
 
+      # - name: Run Worker
+      #   run: |
+      #     just setup
+      #     just worker
       # - uses: actions/setup-python@v4
       #   with:
       #     python-version: "3.11"
