@@ -40,8 +40,8 @@ jobs:
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
 
-      - name: Authenticate GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      # - name: Authenticate GitHub CLI #no need to authenticate GH_TOKEN set
+      #   run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Create repo
         continue-on-error: true
