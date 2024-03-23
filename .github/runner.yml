@@ -1,4 +1,4 @@
-name: build
+name: run
 
 on:
   push:
@@ -7,17 +7,20 @@ on:
     branches: ["main"]
 
   workflow_dispatch:
-  schedule:
-    - cron: "*/20 * * * *"
+  # schedule: #TODO:
+  #   - cron: "* */2 * * *"
 
-# concurrency:
-#   group: ${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
-  token: ${{ secrets.TOKEN_GITHUB }}
+  GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
+  token: ${{ secrets.TOKEN_GITHUB || github.token }}
   GH_TOKEN: ${{ github.token }}
   GITHUB_REPO: ${{github.repo}}
+  envfile: ${{secrets.ENV}}
+  WORKER_ORG: ${{ github.repository_owner}}
 
 permissions:
   contents: write
@@ -31,77 +34,29 @@ permissions:
   security-events: write
   statuses: write
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "linux"
-  linux:
-    # if: false #use to disable the job
-
+  runner-linux:
     runs-on: ubuntu-latest
+    # needs: [build]
     # timeout-minutes: 30
-
     steps:
       - name: Free Space Before
         run: |
           echo "Free space:"
           df -h
 
-      # - name: Maximize build space
-      #   uses: easimon/maximize-build-space@master
-      #   with:
-      #     # need space in /var for Docker images
-      #     root-reserve-mb: 30000
-      #     # swap-size-mb: 1024
-      #     remove-dotnet: 'true'
-      #     remove-android: true
-      #     remove-haskell: true
-      #     remove-codeql: true
-      #     remove-docker-images: true
-      #     overprovision-lvm: true
       - name: Remove unnecessary
         run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/share/dotnet &
+          sudo rm -rf /usr/local/lib/android &
+          sudo rm -rf /opt/ghc &
+          sudo rm -rf /opt/hostedtoolcache/CodeQL &
           sudo docker image prune --all --force &
 
       - name: Free Space
         run: |
           echo "Free space:"
           df -h
-
-      - uses: actions/checkout@v3
-        with:
-          persist-credentials: true #implicit access to the token to every step
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          check-latest: true
-          go-version: 1.22
-
-      - name: Log in to the Container registry
-        if: false #${{ github.event.inputs.runs-on }}
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-          cache: "pip"
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8.6.6
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "21.5.0"
-          check-latest: false
 
       - name: Set up Git credentials
         run: |
@@ -112,13 +67,53 @@ jobs:
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
 
-          
-      # "touch continue" to continue the workflow without exiting the session
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-        timeout-minutes: 10000
+      - uses: actions/checkout@v4
         with:
-          wait-timeout-minutes: 60
-          # ssh-known-hosts: ${{ steps.read_pub_key.outputs.pub_key }}
-          limit-access-to-actor: true
-          limit-access-to-users: Nasfame,pythoneerHiro
+          token: ${{env.GITHUB_TOKEN}}
+          recursive: true
+          persist-credentials: true
+
+      - uses: extractions/setup-just@v1
+  
+      # - name: Write environment
+      #   working-directory: ./worker
+      #   run: |
+      #     echo ${{env.envfile}} > .env
+      #     sed -i 's/ /\n/g' .env
+      #     source .env
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.6
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20.x.x"
+          check-latest: true
+
+      - name: Set Worker Name
+        working-directory: ./worker
+        run: |
+          touch .env
+          workerName="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref }}"  
+          workerName=$(echo $workerName | sed 's/\//-/g')
+
+          # export WORKER_NAME="$workerName"
+
+          # echo 'WORKER_NAME=$workerName' >> $GITHUB_ENV
+          # echo 'WORKER_NAME=$workerName' | tee $GITHUB_ENV
+          echo 'WORKER_NAME=$workerName' | tee .env
+
+
+          echo WorkerName=$workerName
+
+      - name: Run Worker
+        working-directory: ./worker
+        run: |
+          just setup
+          just
+
+      # - uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.11"
+      #     cache: "pip"
