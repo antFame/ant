@@ -19,8 +19,8 @@ env:
   token: ${{ secrets.TOKEN_GITHUB || github.token }}
   GH_TOKEN: ${{ github.token }}
   GITHUB_REPO: ${{github.repo}}
-  envfile: ${{secrets.ENV}}
   WORKER_ORG: ${{ github.repository_owner}}
+  # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
 
 permissions:
   contents: write
@@ -78,7 +78,7 @@ jobs:
       # - name: Write environment
       #   working-directory: ./worker
       #   run: |
-      #     echo ${{env.envfile}} > .env
+      #     echo  ${{secrets.ENV}} > .env
       #     sed -i 's/ /\n/g' .env
       #     source .env
 
@@ -95,17 +95,17 @@ jobs:
         working-directory: ./worker
         run: |
           touch .env
-          workerName="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref }}"  
-          workerName=$(echo $workerName | sed 's/\//-/g')
+          WORKER_NAME="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref }}"  
+          export WORKER_NAME=$(echo $WORKER_NAME | sed 's/\//-/g')
 
-          # export WORKER_NAME="$workerName"
+          # export WORKER_NAME="${{env.WORKER_NAME}}"
 
-          # echo 'WORKER_NAME=$workerName' >> $GITHUB_ENV
-          # echo 'WORKER_NAME=$workerName' | tee $GITHUB_ENV
-          echo 'WORKER_NAME=$workerName' | tee .env
+          # echo 'WORKER_NAME=$WORKER_NAME' >> $GITHUB_ENV
+          # echo 'WORKER_NAME=$WORKER_NAME' | tee $GITHUB_ENV
+          echo 'WORKER_NAME=$WORKER_NAME' | tee .env
 
 
-          echo WorkerName=$workerName
+          echo WorkerName=$WORKER_NAME
 
       - name: Run Worker
         working-directory: ./worker
