@@ -70,11 +70,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{env.GITHUB_TOKEN}}
-          recursive: true
+          submodules: true
           persist-credentials: true
 
       - uses: extractions/setup-just@v1
-  
+
       # - name: Write environment
       #   working-directory: ./worker
       #   run: |
