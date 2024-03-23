@@ -7,4 +7,5 @@ git-sync:
 
 
 boot-worker: 
+  just worker/genWorkerName
   just worker/boot

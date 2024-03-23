@@ -91,24 +91,7 @@ jobs:
           node-version: "20.x.x"
           check-latest: true
 
-      - name: Set Worker Name
-        shell: bash
-        working-directory: ./worker
-        run: |
-          touch .env
-          WORKER_NAME="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref_name }}"  
-          export WORKER_NAME=$(echo $WORKER_NAME | sed 's/\//-/g')
-
-          # export WORKER_NAME=$WORKER_NAME
-
-          # echo 'WORKER_NAME=$WORKER_NAME' >> $GITHUB_ENV
-          # echo 'WORKER_NAME=$WORKER_NAME' | tee $GITHUB_ENV
-          echo 'WORKER_NAME=$WORKER_NAME' | tee .env
-
-
-          echo WorkerName=$WORKER_NAME
-
-      - name: Runner
+      - name: Boot Worker
         run: |
           just boot-worker
 
