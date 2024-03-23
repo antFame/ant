@@ -1,7 +1,7 @@
 
-import 'worker/justfile'
+# import 'worker/justfile'
 
-# default: boot-worker
+default: boot-worker
 sync: git-sync
 
 git-sync:
