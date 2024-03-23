@@ -98,7 +98,7 @@ jobs:
           WORKER_NAME="${{github.repository}}-${{runner.os}}-${{ github.workflow }}-${{ github.ref }}"  
           export WORKER_NAME=$(echo $WORKER_NAME | sed 's/\//-/g')
 
-          # export WORKER_NAME="${{env.WORKER_NAME}}"
+          # export WORKER_NAME=$WORKER_NAME
 
           # echo 'WORKER_NAME=$WORKER_NAME' >> $GITHUB_ENV
           # echo 'WORKER_NAME=$WORKER_NAME' | tee $GITHUB_ENV
