@@ -84,7 +84,7 @@ jobs:
           git fetch -p origin
           # git lfs push --all https://github.com/EXAMPLE-USER/NEW-REPOSITORY.git
           git push --mirror
-          git lfs push --all 
+          git lfs push --all origin
           # git push origin main -f
       # set gh auth
       # gh create public repo in a step
