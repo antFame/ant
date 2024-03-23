@@ -52,6 +52,22 @@ jobs:
           gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.WORKER_ORG }}
           gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.GITHUB_TOKEN }}
 
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{github.repository}}
+          # branch: main
+          path: ./ant
+          tags: true
+          token: ${{env.GITHUB_TOKEN}}
+          submodules: true
+          persist-credentials: true
+
+      - name: Mirror
+        run: |
+          cd ./ant
+          git remote set-url --push origin https://github.com/${{env.REPO}}
+          git fetch -p origin
+          git push --mirror
       # set gh auth
       # gh create public repo in a step
       # gh add secret WORKER_ORG secret to the repo
