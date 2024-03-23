@@ -28,7 +28,8 @@ jobs:
         repo: ["a"]
 
     runs-on: ubuntu-latest
-
+    env:
+      REPO: ${{matrix.org}}/${{matrix.repo}}
     steps:
       - name: Set up Git credentials
         run: |
@@ -41,6 +42,15 @@ jobs:
 
       - name: Authenticate GitHub CLI
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Create repo
+        continue-on-error: true
+        run: gh repo create ${{env.REPO}} --public --confirm
+
+      - name: Set secrets
+        run: |
+          gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.WORKER_ORG }}
+          gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.GITHUB_TOKEN }}
 
       # set gh auth
       # gh create public repo in a step
