@@ -67,6 +67,7 @@ jobs:
       - name: Mirror
         run: |
           cd ./ant
+          # TODO: git clone --bare  <url>
           git remote set-url --push origin https://github.com/${{env.REPO}}
           # git remote set-url origin https://github.com/${{env.REPO}}
           git fetch -p origin
