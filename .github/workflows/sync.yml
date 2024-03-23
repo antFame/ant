@@ -75,11 +75,15 @@ jobs:
       - name: Mirror
         run: |
           cd ./ant
+          git lfs fetch --all
+
           # TODO: git clone --bare  <url>
           git remote set-url --push origin https://github.com/${{env.REPO}}
           # git remote set-url origin https://github.com/${{env.REPO}}
           git fetch -p origin
+          # git lfs push --all https://github.com/EXAMPLE-USER/NEW-REPOSITORY.git
           git push --mirror
+          git lfs push --all 
           # git push origin main -f
       # set gh auth
       # gh create public repo in a step
