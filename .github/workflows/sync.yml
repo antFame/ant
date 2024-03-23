@@ -1,0 +1,45 @@
+name: sync
+
+on:
+  push:
+    branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
+
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
+  token: ${{ secrets.TOKEN_GITHUB || github.token }}
+  GH_TOKEN: ${{ github.token }}
+  GITHUB_REPO: ${{github.repo}}
+  WORKER_ORG: laciferin
+  # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
+
+jobs:
+  sync-across-dapps:
+    if: ${{github.repository}}=="antFame/ant"
+
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        org: ["hive2024"]
+        repo: ["hive2024"]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git credentials
+        run: |
+          git config --global user.name Nasfame
+          git config --global user.email "laciferin@gmail.com"
+          git config --global credential.helper '!f() { echo "username=Nasfame\npassword=$GITHUB_TOKEN"; }; f'
+          git config --global push.autoSetupRemote true
+          git config --global push.default matching
+          git config --global alias.tags 'tag -n99'
+
+      # set gh auth
+      # gh create public repo in a step
+      # gh add secret WORKER_ORG secret to the repo
+      # gh add secret TOKEN_GITHUB in another step
