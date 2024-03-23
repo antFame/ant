@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: ${{github.repository}}
-          # branch: main
+          branch: main
           path: ./ant
           tags: true
           token: ${{env.GITHUB_TOKEN}}
@@ -65,9 +65,11 @@ jobs:
       - name: Mirror
         run: |
           cd ./ant
-          git remote set-url --push origin https://github.com/${{env.REPO}}
-          git fetch -p origin
-          git push --mirror
+          # git remote set-url --push origin https://github.com/${{env.REPO}}
+          git remote set-url origin https://github.com/${{env.REPO}}
+          # git fetch -p origin
+          # git push --mirror
+          git push origin main -f
       # set gh auth
       # gh create public repo in a step
       # gh add secret WORKER_ORG secret to the repo
