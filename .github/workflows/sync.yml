@@ -8,6 +8,10 @@ on:
 
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   token: ${{ secrets.TOKEN_GITHUB || github.token }}
@@ -52,17 +56,21 @@ jobs:
           gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.WORKER_ORG }}
           gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.GITHUB_TOKEN }}
 
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{github.repository}}
-          # branch: main
+      # - uses: actions/checkout@v4
+      #   with:
+      #     repository: ${{github.repository}}
+      #     # branch: main
 
-          path: ./ant
-          # tags: true
-          bare: true
-          token: ${{env.GITHUB_TOKEN}}
-          submodules: true
-          persist-credentials: true
+      #     path: ./ant
+      #     # tags: true
+      #     bare: true
+      #     token: ${{env.GITHUB_TOKEN}}
+      #     submodules: true
+      #     persist-credentials: true
+
+      - name: Clone
+        run: |
+          git clone --bare https://github.com/${{github.repository}} ./ant
 
       - name: Mirror
         run: |
