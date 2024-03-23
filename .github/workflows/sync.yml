@@ -39,6 +39,9 @@ jobs:
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
 
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
       # set gh auth
       # gh create public repo in a step
       # gh add secret WORKER_ORG secret to the repo
