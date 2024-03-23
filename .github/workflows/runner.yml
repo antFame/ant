@@ -20,7 +20,8 @@ env:
   GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: ${{ secrets.WORKER_ORG || github.repository_owner}}
-  # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
+  ORIGINALS: ${{github.repository_owner}}==antFame
+  WORKER_TIMEOUT: ${{ github.repository_owner==antFame && 15 || 360}}
 
 permissions:
   contents: write
