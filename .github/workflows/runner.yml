@@ -7,12 +7,12 @@ on:
     branches: ["main"]
 
   workflow_dispatch:
-  # schedule: #TODO:
-  #   - cron: "* */2 * * *"
+  schedule:
+    - cron: "30 */5 * * *"
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.ref }}
+#   cancel-in-progress: true
 
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
