@@ -3,7 +3,7 @@ name: sync
 on:
   push:
     branches:
-      # - main
+      - main
   # pull_request:
   #   branches: ["main"]
 
@@ -33,7 +33,7 @@ jobs:
       max-parallel: 2
       fail-fast: false
       matrix:
-        org: ["colony2024"] #colony2023
+        org: ["colony2024"] #colony2023, colony2022
         repo: ["a", "b", "c", "d", "e", "f"]
 
     runs-on: ubuntu-latest
