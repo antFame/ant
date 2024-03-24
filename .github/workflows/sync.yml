@@ -27,8 +27,6 @@ jobs:
   #   uses: octo-org/example-repo/.github/workflows/workflow1.yaml@main
 
   sync-across-dapps:
-    # if: ${{github.repository}}=="antFame/ant" 3FIXME: not working
-    if: ${{github.repository_owner}}==antFame
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -39,6 +37,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REPO: ${{matrix.org}}/${{matrix.repo}}
+
+    if: ${{github.repository}}=="antFame/ant" #FIXME: not working
+
     steps:
       - name: Set up Git credentials
         run: |
