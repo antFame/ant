@@ -10,9 +10,9 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 
-# concurrency:
-#   group: ${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true #fix: runner exist
 
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
