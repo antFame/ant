@@ -8,11 +8,11 @@ on:
 
   workflow_dispatch:
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "0 */6 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false #fix: runner exist
+  cancel-in-progress: true #fix: runner exist
 
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
