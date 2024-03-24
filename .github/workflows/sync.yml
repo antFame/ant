@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         org: ["colony2024"] #colony2023
-        repo: ["a"]
+        repo: ["a", "b", "c", "d", "e", "f"]
 
     runs-on: ubuntu-latest
     env:
