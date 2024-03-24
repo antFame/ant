@@ -42,7 +42,7 @@ jobs:
             colony2021,
             colony2020,
           ]
-        repo: [a, b, c, d, e] #f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]
+        repo: [a, b, c, d, e ,f ] #, g, h, i, j, k, l, m, n, o, p, q, r, s, t]
 
     runs-on: ubuntu-latest
     env:
