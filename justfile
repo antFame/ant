@@ -1,5 +1,14 @@
+# set shell := ["sh", "-c"]
+# set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+set allow-duplicate-recipes
+# set positional-arguments
+set dotenv-load
+set export 
 
-import 'worker/justfile'
+# import 'worker/justfile'
+
+default: boot-worker
+sync: git-sync
 
 git-sync:
   git submodule sync

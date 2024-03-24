@@ -1,0 +1,95 @@
+name: sync
+
+on:
+  push:
+    branches:
+      # - main
+  # pull_request:
+  #   branches: ["main"]
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
+  token: ${{ secrets.TOKEN_GITHUB || github.token }}
+  GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
+  GITHUB_REPO: ${{github.repository}}
+  WORKER_ORG: laciferin
+  # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
+
+jobs:
+  # workflow1:
+  #   uses: octo-org/example-repo/.github/workflows/workflow1.yaml@main
+
+  sync-across-dapps:
+    if: ${{github.repository}}=="antFame/ant"
+
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        org: ["colony2024"] #colony2023
+        repo: ["a"]
+
+    runs-on: ubuntu-latest
+    env:
+      REPO: ${{matrix.org}}/${{matrix.repo}}
+    steps:
+      - name: Set up Git credentials
+        run: |
+          git config --global user.name Nasfame
+          git config --global user.email "laciferin@gmail.com"
+          git config --global credential.helper '!f() { echo "username=Nasfame\npassword=$GITHUB_TOKEN"; }; f'
+          git config --global push.autoSetupRemote true
+          git config --global push.default matching
+          git config --global alias.tags 'tag -n99'
+
+      # - name: Authenticate GitHub CLI #no need to authenticate GH_TOKEN set
+      #   run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Create repo
+        continue-on-error: true
+        run: gh repo create ${{env.REPO}} --public --confirm
+
+      - name: Set secrets
+        run: |
+          gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.WORKER_ORG }}
+          gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.GITHUB_TOKEN }}
+
+      # - uses: actions/checkout@v4
+      #   with:
+      #     repository: ${{github.repository}}
+      #     # branch: main
+
+      #     path: ./ant
+      #     # tags: true
+      #     bare: true
+      #     token: ${{env.GITHUB_TOKEN}}
+      #     submodules: true
+      #     persist-credentials: true
+
+      - name: Clone
+        run: |
+          git clone --bare https://github.com/${{github.repository}} ./ant
+
+      - name: Mirror
+        run: |
+          cd ./ant
+          git lfs fetch --all
+
+          # TODO: git clone --bare  <url>
+          git remote set-url --push origin https://github.com/${{env.REPO}}
+          # git remote set-url origin https://github.com/${{env.REPO}}
+          git fetch -p origin
+          # git lfs push --all https://github.com/EXAMPLE-USER/NEW-REPOSITORY.git
+          git push --mirror
+          git lfs push --all origin
+          # git push origin main -f
+      # set gh auth
+      # gh create public repo in a step
+      # gh add secret WORKER_ORG secret to the repo
+      # gh add secret TOKEN_GITHUB in another step
