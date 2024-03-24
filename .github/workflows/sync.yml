@@ -19,6 +19,7 @@ env:
   GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: laciferin
+  ORIGINALS: ${{github.repository_owner}}==antFame
   # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
 
 jobs:
@@ -26,8 +27,8 @@ jobs:
   #   uses: octo-org/example-repo/.github/workflows/workflow1.yaml@main
 
   sync-across-dapps:
-    if: ${{github.repository}}=="antFame/ant"
-
+    # if: ${{github.repository}}=="antFame/ant" 3FIXME: not working
+    if: ${{github.repository_owner}}==antFame
     strategy:
       max-parallel: 2
       fail-fast: false
