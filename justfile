@@ -65,12 +65,9 @@ remove-all-runners ORG:
   just list-runners {{ORG}} | jq .runners[].id | xargs -I {} just delete-runner {{ORG}} {} 
 
 [unix]
-get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
-  just list-runners {{ORG}} | jq '.runners[] | select(.name == {{RunnerName}}) | .id'
+@get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
+  just list-runners {{ORG}} | jq '.runners[] | select(.name == "{{RunnerName}}") | .id'
 
-#move to worker just file
-# get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
-#   just list-runners {{ORG}} | jq '.runners[] | select(.name == {{RunnerName}}) | .id'
-
+#TODO: move to worker just file with default oa to different jsutfile
 
 # recipe params: https://just.systems/man/en/chapter_38.html
