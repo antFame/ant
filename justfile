@@ -66,7 +66,12 @@ remove-all-runners ORG:
 
 [unix]
 @get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
-  just list-runners {{ORG}} | jq '.runners[] | select(.name == "{{RunnerName}}") | .id'
+  just list-runners {{ORG}} | jq '.runners[] | select(.name == "{{RunnerName}}")'
+
+[unix]
+delete-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
+  just get-runner-name {{ORG}} {{RunnerName}} | jq '.id' | xargs -I {} just delete-runner {{ORG}} {} 
+
 
 #TODO: move to worker just file with default oa to different jsutfile
 
