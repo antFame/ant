@@ -71,8 +71,12 @@ jobs:
       - uses: extractions/setup-just@v1
 
       - name: SSH Config
-        run: just setup-ssh ${{secrets.SSH_PRIVATE_KEY}}
-        # shell: bash
+        run: |
+          mkdir -p ~/.ssh/
+          echo -e "Host github.com\nHostName github.com\nUser git\nIdentityFile ~/.ssh/github.com-Nasfame\nIdentitiesOnly yes" > ~/.ssh/config
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github.com-Nasfame
+          chmod 600 ~/.ssh/config ~/.ssh/github.com-Nasfame
+        shell: bash
 
       - uses: actions/checkout@v4
         with:
