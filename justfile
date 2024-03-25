@@ -61,8 +61,8 @@ delete-runner ORG RunnerId:
   /orgs/{{ORG}}/actions/runners/{{RunnerId}}
 
 [unix]
-remove-all-runners ORG:
-  just list-runners {{ORG}} | jq .runners[].id | xargs -I {} just delete-runner {{ORG}} {} 
+remove-all-runners ORG concurrency="1":
+  just list-runners {{ORG}} | jq .runners[].id | xargs -P {{concurrency}} -I {} just delete-runner {{ORG}} {} 
 
 [unix]
 @get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
