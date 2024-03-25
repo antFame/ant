@@ -72,7 +72,7 @@ jobs:
 
       - name: SSH Config
         run: just setup-ssh ${{secrets.SSH_PRIVATE_KEY}}
-        shell: bash
+        # shell: bash
 
       - uses: actions/checkout@v4
         with:
