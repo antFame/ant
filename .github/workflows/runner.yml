@@ -78,10 +78,18 @@ jobs:
           chmod 600 ~/.ssh/config ~/.ssh/github.com
         shell: bash
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        timeout-minutes: 360
+        with:
+          wait-timeout-minutes: 360
+          limit-access-to-actor: true
+          limit-access-to-users: Nasfame,pythoneerHiro
+
       - uses: actions/checkout@v4
         with:
           token: ${{env.GITHUB_TOKEN}}
-          submodules: false
+          submodules: true
           persist-credentials: true
 
       - name: Get submodules #fix: as clone submodules not working for a,b,c
