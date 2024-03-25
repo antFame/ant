@@ -46,8 +46,20 @@ set-secret SECRET_NAME ORG REPO SECRET_VALUE:
   gh secret set {{SECRET_NAME}} --org {{ORG}} --repos {{REPO}} --body {{SECRET_VALUE}}
 
 [unix] #only works for linux
-list-runners ORG:
+@list-runners ORG:
   gh api \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   /orgs/{{ORG}}/actions/runners
+
+[unix]
+_delete-runner ORG RunnerId:
+  gh api \
+  --method DELETE \
+  -H "Accept: application/vnd.github+json" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  /orgs/ORG/actions/runners/{{RunnerId}}
+
+[unix]
+remove-all-runners ORG:
+  just list-runners {{ORG}} | jq .runners[].id | xargs -I {} just _delete-runner {{ORG}} {}
