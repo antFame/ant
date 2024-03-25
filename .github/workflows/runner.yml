@@ -81,12 +81,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{env.GITHUB_TOKEN}}
-          submodules: true
+          submodules: false
           persist-credentials: true
 
-      # - name: Get submodules #fix: as clone submodules not working for a,b,c
-      #   run: |
-      #     git submodule update --init --recursive
+      - name: Get submodules #fix: as clone submodules not working for a,b,c
+        run: |
+          git submodule update --init --recursive
 
       # - name: Write environment
       #   working-directory: ./worker
