@@ -16,7 +16,7 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
-  token: ${{ secrets.TOKEN_GITHUB || github.token }}
+  # token: ${{ secrets.TOKEN_GITHUB || github.token }}
   GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: ${{ secrets.WORKER_ORG || github.repository_owner}}
