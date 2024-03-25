@@ -40,3 +40,7 @@ cancel-github-jobs:
       gh run cancel "$run_id"
   done
 
+set-secret SECRET_NAME, ORG, REPO, SECRET_VALUE:
+  # gh secret remove {{SECRET_NAME}} --org {{ORG}} --repo {{REPO}}
+  # set or update secrets
+  gh secret set {{SECRET_NAME}} --org {{ORG}} --repos {{REPO}} --body {{SECRET_VALUE}}
