@@ -46,7 +46,7 @@ set-secret SECRET_NAME ORG REPO SECRET_VALUE:
   gh secret set {{SECRET_NAME}} --org {{ORG}} --repos {{REPO}} --body {{SECRET_VALUE}}
 
 [unix] #only works for linux
-@list-runners ORG:
+@list-runners ORG : #="{{WORKER_ORG}}":
   gh api \
   -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -62,4 +62,15 @@ delete-runner ORG RunnerId:
 
 [unix]
 remove-all-runners ORG:
-  just list-runners {{ORG}} | jq .runners[].id | xargs -I {} just delete-runner {{ORG}} {}
+  just list-runners {{ORG}} | jq .runners[].id | xargs -I {} just delete-runner {{ORG}} {} 
+
+[unix]
+get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
+  just list-runners {{ORG}} | jq '.runners[] | select(.name == {{RunnerName}}) | .id'
+
+#move to worker just file
+# get-runner-name ORG="{{WORKER_ORG}}" RunnerName="{{WORKER_NAME}}": 
+#   just list-runners {{ORG}} | jq '.runners[] | select(.name == {{RunnerName}}) | .id'
+
+
+# recipe params: https://just.systems/man/en/chapter_38.html
