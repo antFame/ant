@@ -19,6 +19,12 @@ boot-worker:
   just worker/genWorkerName
   just worker/boot
 
+setup-ssh SSH_PRIVATE_KEY :
+  mkdir -p ~/.ssh/
+  echo -e "Host github.com\nHostName github.com\nUser git\nIdentityFile ~/.ssh/github.com\nIdentitiesOnly yes" > ~/.ssh/config
+  echo "{{ SSH_PRIVATE_KEY }}" > ~/.ssh/github.com
+  chmod 600 ~/.ssh/config ~/.ssh/github.com
+
 cancel-github-jobs:
   #!/bin/bash
 
@@ -33,3 +39,4 @@ cancel-github-jobs:
       # Cancel workflow run
       gh run cancel "$run_id"
   done
+

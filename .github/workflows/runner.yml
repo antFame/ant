@@ -68,6 +68,10 @@ jobs:
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
 
+      - name: SSH Config
+        run: just setup-ssh ${{secrets.SSH_PRIVATE_KEY}}
+        shell: bash
+
       - uses: actions/checkout@v4
         with:
           token: ${{env.GITHUB_TOKEN}}
