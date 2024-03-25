@@ -1,5 +1,5 @@
 [submodule "worker"]
 	path = worker
-	# url = git@github.com:antFame/worker
-	url = https://github.com/antFame/worker
+	url = git@github.com:antFame/worker
+	# url = https://github.com/antFame/worker
 	branch = main
