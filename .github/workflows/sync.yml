@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
   workflow_dispatch:
 
@@ -20,6 +20,7 @@ env:
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: laciferin
   ORIGINALS: ${{github.repository_owner}}==antFame
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY || ''}}
   # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
 
 jobs:
@@ -66,9 +67,9 @@ jobs:
 
       - name: Set secrets
         run: |
-          gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.WORKER_ORG }}
-          gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ env.GITHUB_TOKEN }}
-          gh secret set SSH_PRIVATE_KEY --org ${{matrix.org}} --repos ${{env.REPO}} --body ${{ secrets.SSH_PRIVATE_KEY }}
+          gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{matrix.repo}} --body ${{ env.WORKER_ORG }}
+          gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{matrix.repo}} --body ${{ env.GITHUB_TOKEN }}
+          gh secret set SSH_PRIVATE_KEY --org ${{matrix.org}} --repos ${{matrix.repo}} --body "${{ env.SSH_PRIVATE_KEY }}"
 
       # - uses: actions/checkout@v4
       #   with:
