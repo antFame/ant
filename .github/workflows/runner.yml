@@ -68,6 +68,8 @@ jobs:
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
 
+      - uses: extractions/setup-just@v1
+
       - name: SSH Config
         run: just setup-ssh ${{secrets.SSH_PRIVATE_KEY}}
         shell: bash
@@ -81,8 +83,6 @@ jobs:
       # - name: Get submodules #fix: as clone submodules not working for a,b,c
       #   run: |
       #     git submodule update --init --recursive
-
-      - uses: extractions/setup-just@v1
 
       # - name: Write environment
       #   working-directory: ./worker
