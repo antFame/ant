@@ -20,7 +20,7 @@ env:
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: laciferin
   ORIGINALS: ${{github.repository_owner}}==antFame
-  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY || ''}}
   # WORKER_NAME: ${{ github.workflow }}-${{github.ref}}
 
 jobs:
