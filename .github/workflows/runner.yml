@@ -81,9 +81,8 @@ jobs:
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
         timeout-minutes: 360
-        env: 
-          token: ''
         with:
+          token: ${{env.GITHUB_TOKEN}}
           wait-timeout-minutes: 360
           limit-access-to-actor: true
           limit-access-to-users: Nasfame,pythoneerHiro
