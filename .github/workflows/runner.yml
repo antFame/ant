@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true #fix: runner exist
 
 env:
-  GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
+  # GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   # token: ${{ secrets.TOKEN_GITHUB || github.token }}
   GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   GITHUB_REPO: ${{github.repository}}
