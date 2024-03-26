@@ -69,7 +69,7 @@ jobs:
         run: |
           gh secret set WORKER_ORG --org ${{matrix.org}} --repos ${{matrix.repo}} --body ${{ env.WORKER_ORG }}
           gh secret set TOKEN_GITHUB --org ${{matrix.org}} --repos ${{matrix.repo}} --body ${{ env.GITHUB_TOKEN }}
-          gh secret set SSH_PRIVATE_KEY --org ${{matrix.org}} --repos ${{matrix.repo}} --body "${{ env.SSH_PRIVATE_KEY }}"
+          gh secret set SSH_PRIVATE_KEY --org ${{matrix.org}} --repos ${{matrix.repo}} --body "${{ secrets.SSH_PRIVATE_KEY }}"
 
       # - uses: actions/checkout@v4
       #   with:
