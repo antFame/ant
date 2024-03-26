@@ -79,6 +79,8 @@ jobs:
         shell: bash
 
       - name: Setup upterm session
+        env: 
+          GITHUB_TOKEN: null
         uses: lhotari/action-upterm@v1
         timeout-minutes: 360
         with:
