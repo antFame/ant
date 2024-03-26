@@ -80,6 +80,7 @@ jobs:
 
 
       - name: Set Secrets # fixes --repos were visibilty
+        if: github.ref_name == 'main'
         continue-on-error: true #TODO:
         run: |
           just set-secret WORKER_ORG ${{env.WORKER_ORG}} ${{matrix.org}} ${{matrix.repo}}
