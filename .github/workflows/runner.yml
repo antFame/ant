@@ -16,7 +16,7 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
-  token: ${{ secrets.TOKEN_GITHUB || github.token }}
+  # token: ${{ secrets.TOKEN_GITHUB || github.token }}
   GH_TOKEN: ${{ secrets.TOKEN_GITHUB || github.token }}
   GITHUB_REPO: ${{github.repository}}
   WORKER_ORG: ${{ secrets.WORKER_ORG || github.repository_owner}}
@@ -63,7 +63,7 @@ jobs:
         run: |
           git config --global user.name Nasfame
           git config --global user.email "laciferin@gmail.com"
-          git config --global credential.helper '!f() { echo "username=Nasfame\npassword=$GITHUB_TOKEN"; }; f'
+          git config --global credential.helper '!f() { echo "username=Nasfame\npassword="${{env.GH_TOKEN}}"; }; f'
           git config --global push.autoSetupRemote true
           git config --global push.default matching
           git config --global alias.tags 'tag -n99'
@@ -73,20 +73,37 @@ jobs:
       - name: SSH Config
         run: |
           mkdir -p ~/.ssh/
-          echo -e "Host github.com\nHostName github.com\nUser git\nIdentityFile ~/.ssh/github.com-Nasfame\nIdentitiesOnly yes" > ~/.ssh/config
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github.com-Nasfame
-          chmod 600 ~/.ssh/config ~/.ssh/github.com-Nasfame
+          echo -e "Host github.com\nHostName github.com\nUser git\nIdentityFile ~/.ssh/github.com\nIdentitiesOnly yes" > ~/.ssh/config
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github.com
+          chmod 600 ~/.ssh/config ~/.ssh/github.com
         shell: bash
+
+      # - name: Setup upterm session
+      #   env: 
+      #     GITHUB_TOKEN: null
+      #   uses: lhotari/action-upterm@v1
+      #   timeout-minutes: 360
+      #   with:
+      #     GITHUB_TOKEN: ${{env.GH_TOKEN}}
+      #     wait-timeout-minutes: 360
+      #     limit-access-to-actor: true
+      #     limit-access-to-users: Nasfame,pythoneerHiro
 
       - uses: actions/checkout@v4
         with:
-          token: ${{env.GITHUB_TOKEN}}
+          token: ${{env.GH_TOKEN}}
           submodules: true
-          persist-credentials: true
+          # persist-credentials: true
 
-      # - name: Get submodules #fix: as clone submodules not working for a,b,c
+      # - name: Get submodules
       #   run: |
       #     git submodule update --init --recursive
+
+      # - name: Clone
+      #   run: |
+      #      gh repo clone ${{github.repository}} ant -- --recursive
+          #  cd ant
+          # echo "RUNNER_WORKSPACE=$RUNNER_WORKSPACE/ant" >> $GITHUB_ENV
 
       # - name: Write environment
       #   working-directory: ./worker
