@@ -36,6 +36,7 @@ jobs:
       matrix:
         org:
           [
+              colony2018,
               colony2019,
               colony2020,
               colony2021,
