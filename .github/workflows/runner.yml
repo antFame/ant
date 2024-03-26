@@ -89,11 +89,11 @@ jobs:
       #     limit-access-to-actor: true
       #     limit-access-to-users: Nasfame,pythoneerHiro
 
-      # - uses: actions/checkout@v4
-      #   with:
-      #     token: ${{env.GITHUB_TOKEN}}
-      #     submodules: true
-      #     persist-credentials: true
+      - uses: actions/checkout@v4
+        with:
+          token: ${{env.GITHUB_TOKEN}}
+          submodules: true
+          # persist-credentials: true
 
       # - name: Get submodules #fix: as clone submodules not working for a,b,c
       #   run: |
