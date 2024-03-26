@@ -40,10 +40,15 @@ cancel-github-jobs:
       gh run cancel "$run_id"
   done
 
-set-secret SECRET_NAME ORG REPO SECRET_VALUE:
+# https://cli.github.com/manual/gh_secret_set
+set-secret SECRET_NAME SECRET_VALUE ORG REPO :
+  gh secret set {{SECRET_NAME}} -R github.com/{{ORG}}/{{REPO}} --body "{{SECRET_VALUE}}"
+  
+  # TODO: refer doc and if to set secrets accordiing if org or repo passed and stuff
   # gh secret remove {{SECRET_NAME}} --org {{ORG}} --repo {{REPO}}
   # set or update secrets
-  gh secret set {{SECRET_NAME}} --org {{ORG}} --repos {{REPO}} --body {{SECRET_VALUE}}
+  # gh secret set {{SECRET_NAME}} --org {{ORG}} --repos {{REPO}} --body {{SECRET_VALUE}}
 
+  
 
 # recipe params: https://just.systems/man/en/chapter_38.html
