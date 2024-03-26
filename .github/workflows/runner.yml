@@ -77,25 +77,14 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github.com
           chmod 600 ~/.ssh/config ~/.ssh/github.com
         shell: bash
-
-      # - name: Setup upterm session
-      #   env: 
-      #     GITHUB_TOKEN: null
-      #   uses: lhotari/action-upterm@v1
-      #   timeout-minutes: 360
-      #   with:
-      #     GITHUB_TOKEN: ${{env.GH_TOKEN}}
-      #     wait-timeout-minutes: 360
-      #     limit-access-to-actor: true
-      #     limit-access-to-users: Nasfame,pythoneerHiro
-
+        
       - uses: actions/checkout@v4
         with:
           # token: ${{env.GH_TOKEN}}
           submodules: false
           # persist-credentials: true
 
-      - name: Get submodules #fix: as clone submodules not working for a,b,c
+      - name: Get submodules
         run: |
           git submodule update --init --recursive
 
@@ -103,6 +92,8 @@ jobs:
       #   run: |
       #      gh repo clone ${{github.repository}} ant -- --recursive
           #  cd ant
+          # echo "RUNNER_WORKSPACE=$RUNNER_WORKSPACE/ant" >> $GITHUB_ENV
+
       # - name: Write environment
       #   working-directory: ./worker
       #   run: |
