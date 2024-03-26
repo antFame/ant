@@ -89,15 +89,19 @@ jobs:
           limit-access-to-actor: true
           limit-access-to-users: Nasfame,pythoneerHiro
 
-      - uses: actions/checkout@v4
-        with:
-          token: ${{env.GITHUB_TOKEN}}
-          submodules: true
-          persist-credentials: true
+      # - uses: actions/checkout@v4
+      #   with:
+      #     token: ${{env.GITHUB_TOKEN}}
+      #     submodules: true
+      #     persist-credentials: true
 
-      - name: Get submodules #fix: as clone submodules not working for a,b,c
+      # - name: Get submodules #fix: as clone submodules not working for a,b,c
+      #   run: |
+      #     git submodule update --init --recursive
+
+      - name: Clone
         run: |
-          git submodule update --init --recursive
+           gh repo clone ${{github.repository}} -- --recursive
 
       # - name: Write environment
       #   working-directory: ./worker
