@@ -101,9 +101,10 @@ jobs:
 
       - name: Clone
         run: |
+           cd .. 
+           rm -rf ant
            gh repo clone ${{github.repository}} ant -- --recursive
            cd ant
-
       # - name: Write environment
       #   working-directory: ./worker
       #   run: |
