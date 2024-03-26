@@ -31,17 +31,17 @@ jobs:
     if: github.repository == 'antFame/ant'
 
     strategy:
-      max-parallel: 4
+      max-parallel: 3
       fail-fast: false
       matrix:
         org:
           [
-            colony2025,
-            colony2024,
-            colony2023,
-            colony2022,
-            colony2021,
-            colony2020,
+              colony2020,
+              colony2021,
+              colony2022,
+              colony2023,
+              colony2024,
+              colony2025,
           ]
         repo: [a, b, c, d, e ,f ] #, g, h, i, j, k, l, m, n, o, p, q, r, s, t]
 
@@ -79,6 +79,7 @@ jobs:
 
 
       - name: Set Secrets # fixes --repos were visibilty
+        continue-on-error: true #TODO:
         run: |
           just set-secret WORKER_ORG ${{env.WORKER_ORG}} ${{matrix.org}} ${{matrix.repo}}
           just set-secret TOKEN_GITHUB "${{env.GH_TOKEN}}" ${{matrix.org}} ${{matrix.repo}}
