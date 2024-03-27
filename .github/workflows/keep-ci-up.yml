@@ -1,0 +1,68 @@
+name: Keep the CI on
+
+# github disables workflows if no activity for 60 days
+
+on:
+  push:
+    paths:
+      - '.github/*'
+  workflow_dispatch:
+  schedule:
+    - cron: '1 1 */10 * *'
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: write
+  contents: write
+
+env:
+  UP_BRANCH: keep-it-up
+
+jobs:
+  keep-up-cron:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          ref: ${{ github.head_ref }}
+          persist-credentials: true
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.6
+
+      - name: Git config
+        run: |
+          git config --global user.name Hiro
+          git config --global user.email laciferin@gmail.com
+
+      - name: Add File
+        run: |
+         date +'%d-%m-%y %H:%M' > date.txt
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit
+        with:
+         commit_message: Date By Baymax
+         commit_options: '--no-verify --signoff'
+         add_options: '-u'
+         branch: ${{env.UP_BRANCH}} #'cron/ci-up'
+         create_branch: true
+         push_options: --force
+
+      - name: "Run if changes have been detected"
+        if: steps.auto-commit.outputs.changes_detected == 'true'
+        run: echo "Changes!"
+  
+      - name: "Run if no changes have been detected"
+        if: steps.auto-commit.outputs.changes_detected == 'false'
+        run: echo "No Changes!"
+
+
+          
