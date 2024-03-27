@@ -56,7 +56,7 @@ jobs:
         with:
          commit_message: Date By Baymax
          commit_options: '--no-verify --signoff'
-         add_options: '.'
+        #  add_options: '-u'
          branch: ${{env.UP_BRANCH}} #'cron/ci-up'
          create_branch: true
          push_options: --force
