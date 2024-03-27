@@ -4,8 +4,8 @@ name: Keep the CI on
 
 on:
   pull_request:
-    paths:
-      - '.github/*'
+    # paths:
+    #   - '.github/*'
     branches: ["main"]
 
   # push:
