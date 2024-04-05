@@ -7,6 +7,8 @@ set export
 
 # import 'worker/justfile'
 
+import 'github.justfile'
+
 default: boot-worker
 sync: git-sync
 
