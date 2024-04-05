@@ -16,3 +16,6 @@ accept-invitation INVITATION_ID:
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     /user/repository_invitations/{{INVITATION_ID}}
+
+accept-all-invitations:
+  just list-invitations | jq -r '.[] | .id' | xargs -I {} just accept-invitation {}
