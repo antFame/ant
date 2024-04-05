@@ -19,3 +19,16 @@ accept-invitation INVITATION_ID:
 
 accept-all-invitations:
   just list-invitations | jq -r '.[] | .id' | xargs -I {} just accept-invitation {}
+
+
+# 'direct_member' or 'admin' or 'billing_manager'
+org-invite INVITE_EMAIL="lemniscite@gmail.com" ROLE="admin":
+  gh api \
+    --method POST \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    /orgs/ORG/invitations \
+    -f email={{INVITE_EMAIL}} \
+  -f role= \
+  
+  # https://docs.github.com/en/rest/orgs/members?apiVersion=2022-11-28#create-an-organization-invitation
