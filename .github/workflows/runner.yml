@@ -39,7 +39,7 @@ jobs:
   runner-linux:
     runs-on: ubuntu-latest
     # needs: [build]
-    timeout-minutes: 250
+    # timeout-minutes: 250
     steps:
       - name: Free Space Before
         run: |
@@ -91,8 +91,8 @@ jobs:
       # - name: Clone
       #   run: |
       #      gh repo clone ${{github.repository}} ant -- --recursive
-          #  cd ant
-          # echo "RUNNER_WORKSPACE=$RUNNER_WORKSPACE/ant" >> $GITHUB_ENV
+      #  cd ant
+      # echo "RUNNER_WORKSPACE=$RUNNER_WORKSPACE/ant" >> $GITHUB_ENV
 
       # - name: Write environment
       #   working-directory: ./worker
@@ -111,6 +111,7 @@ jobs:
           check-latest: true
 
       - name: Boot Worker
+        timeout-minutes: ${{env.WORKER_TIMEOUT}}
         run: |
           just boot-worker
 
