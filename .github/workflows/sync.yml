@@ -10,8 +10,8 @@ on:
       - ".github/sync.yml" #only sync when its necessary; running it to api limits
   workflow_dispatch:
 
-  cron:
-    - "0 0 * * *"
+  schedule:
+    - cron: "0 0 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
