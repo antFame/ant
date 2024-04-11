@@ -32,3 +32,11 @@ org-invite INVITE_EMAIL="lemniscite@gmail.com" ROLE="admin":
   -f role= \
   
   # https://docs.github.com/en/rest/orgs/members?apiVersion=2022-11-28#create-an-organization-invitation
+
+
+create-repo REPO_NAME ORG="{{WORKER_ORG}}":
+  gh api \
+    --method POST \
+      -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+          /orgs/{{ORG}}/repos -f name="{{REPO_NAME}}" -f private=false -f auto_init=true -f gitignore_template=Node -f license_template=mit
