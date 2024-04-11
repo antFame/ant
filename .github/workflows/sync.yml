@@ -81,7 +81,7 @@ jobs:
       #     gh secret set ABC -R github.com/colony2024/a --body b
 
       - name: Set Secrets # fixes --repos were visibilty
-        if: github.ref_name == 'main'
+        # if: github.ref_name == 'main'
         continue-on-error: true #TODO:
         run: |
           just set-secret WORKER_ORG ${{env.WORKER_ORG}} ${{matrix.org}} ${{matrix.repo}}
