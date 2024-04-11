@@ -35,7 +35,7 @@ jobs:
 
     strategy:
       max-parallel: 3
-      fail-fast: false
+      fail-fast: true
       matrix:
         org:
           [
