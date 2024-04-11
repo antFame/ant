@@ -1,17 +1,17 @@
 name: sync
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   pull_request:
     branches: ["main"]
     paths:
       - ".github/workflows/sync.yml" #only sync when its necessary; running it to api limits
   workflow_dispatch:
 
-  schedule:
-    - cron: "0 0 * * *"
+  # schedule:
+  #   - cron: "0 0 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -47,8 +47,9 @@ jobs:
             colony2023,
             colony2024,
             colony2025,
+            colony2026,
           ]
-        repo: [a, b, c, d, e, f] #, g, h, i, j, k, l, m, n, o, p, q, r, s, t]
+        repo: [a, b, c, d, e, f, g, h, i, j, k, l, m, "n", o, p, q] #, r, s, t]
 
     runs-on: ubuntu-latest
     env:
