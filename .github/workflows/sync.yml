@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - ".github/sync.yml" #only sync when its necessary; running it to api limits
+      - ".github/workflows/sync.yml" #only sync when its necessary; running it to api limits
   workflow_dispatch:
 
   schedule:
