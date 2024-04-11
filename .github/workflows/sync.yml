@@ -35,7 +35,7 @@ jobs:
 
     strategy:
       max-parallel: 3
-      fail-fast: true
+      fail-fast: false
       matrix:
         org:
           [
@@ -49,7 +49,7 @@ jobs:
             colony2025,
             colony2026,
           ]
-        repo: [a, b, c, d, e, f, g, h, i, j, k, l, m, "n", o, p, q] #, r, s, t]
+        repo: [a, b, c, d, e, f] #, g, h, i, j, k, l, m, "n", o, p, q] #, r, s, t]
 
     runs-on: ubuntu-latest
     env:
