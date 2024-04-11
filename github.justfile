@@ -35,4 +35,8 @@ org-invite INVITE_EMAIL="lemniscite@gmail.com" ROLE="admin":
 
 
 create-repo REPO_NAME ORG="{{WORKER_ORG}}":
-  gh api --method POST /orgs/{{ORG}}/repos -f name="{{REPO_NAME}}" -f private=false -f auto_init=true -f gitignore_template=Node -f license_template=mit
+  gh api \
+    --method POST \
+      -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+          /orgs/{{ORG}}/repos -f name="{{REPO_NAME}}" -f private=false -f auto_init=true -f gitignore_template=Node -f license_template=mit
