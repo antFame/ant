@@ -87,7 +87,7 @@ jobs:
         run: |
           just set-secret WORKER_ORG ${{env.WORKER_ORG}} ${{matrix.org}} ${{matrix.repo}}
           just set-secret TOKEN_GITHUB "${{env.GH_TOKEN}}" ${{matrix.org}} ${{matrix.repo}}
-          echo -n "${{secrets.SSH_PRIVATE_KEY}}" | xargs -I {} just set-secret SSH_PRIVATE_KEY {} "${{matrix.org}}" "${{matrix.repo}}"
+          just set-secret SSH_PRIVATE_KEY "$(echo -n "${{secrets.SSH_PRIVATE_KEY}}")" "${{matrix.org}}" "${{matrix.repo}}"
 
       # - uses: actions/checkout@v4
       #   with:
