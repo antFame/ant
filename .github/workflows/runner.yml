@@ -111,7 +111,7 @@ jobs:
           check-latest: true
 
       - name: Boot Worker
-        timeout-minutes: "${{env.WORKER_TIMEOUT}}"
+        timeout-minutes: ${{ fromJSON(env.WORKER_TIMEOUT) }}
         run: |
           just boot-worker
 
