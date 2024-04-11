@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: ["main"]
     paths:
-      - ".github/sync.yml" #only sync when its necessary; running it to api limits
+      - ".github/workflows/sync.yml" #only sync when its necessary; running it to api limits
   workflow_dispatch:
 
   schedule:
@@ -30,13 +30,12 @@ env:
 jobs:
   # workflow1:
   #   uses: octo-org/example-repo/.github/workflows/workflow1.yaml@main
-
   sync-across-dapps:
     if: github.repository == 'antFame/ant'
 
     strategy:
-      max-parallel: 1
-      fail-fast: false
+      max-parallel: 3
+      fail-fast: true
       matrix:
         org:
           [
@@ -82,12 +81,13 @@ jobs:
       #     gh secret set ABC -R github.com/colony2024/a --body b
 
       - name: Set Secrets # fixes --repos were visibilty
-        if: github.ref_name == 'main'
+        # if: github.ref_name == 'main'
         continue-on-error: true #TODO:
         run: |
           just set-secret WORKER_ORG ${{env.WORKER_ORG}} ${{matrix.org}} ${{matrix.repo}}
           just set-secret TOKEN_GITHUB "${{env.GH_TOKEN}}" ${{matrix.org}} ${{matrix.repo}}
-          just set-secret SSH_PRIVATE_KEY "$(echo -n "${{secrets.SSH_PRIVATE_KEY}}")" "${{matrix.org}}" "${{matrix.repo}}"
+          sshPrivateKey=$(echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r')
+          just set-secret SSH_PRIVATE_KEY "$sshPrivateKey" "${{matrix.org}}" "${{matrix.repo}}"
 
       # - uses: actions/checkout@v4
       #   with:
