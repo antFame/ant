@@ -93,11 +93,11 @@ jobs:
       #   with:
       #     repository: ${{github.repository}}
       #     # branch: main
-
       #     path: ./ant
       #     # tags: true
       #     bare: true
       #     token: ${{env.GITHUB_TOKEN}}
+      #     ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
       #     submodules: true
       #     persist-credentials: true
 
