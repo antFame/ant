@@ -37,19 +37,7 @@ jobs:
       max-parallel: 3
       fail-fast: false
       matrix:
-        org:
-          [
-            colony2024,
-            colony2025,
-            colony2026,
-
-            colony2018,
-            colony2019,
-            colony2020,
-            colony2021,
-            colony2022,
-            colony2023,
-          ]
+        org: [colony2026]
         repo: [a, b, c, d, e, f] #, g, h, i, j, k, l, m, "n", o, p, q] #, r, s, t]
 
     runs-on: ubuntu-latest
