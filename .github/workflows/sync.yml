@@ -44,9 +44,9 @@ jobs:
     env:
       REPO: ${{matrix.org}}/${{matrix.repo}}
     steps:
-      - run: |
-          gh repo delete ${{env.REPO}} --yes
-          exit 2
+      # - run: |
+      #     gh repo delete ${{env.REPO}} --yes
+      #     exit 2
 
       - uses: actions/checkout@v4
       - uses: extractions/setup-just@v1
