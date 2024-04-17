@@ -34,7 +34,7 @@ jobs:
     if: github.repository == 'antFame/ant'
 
     strategy:
-      max-parallel: 3
+      max-parallel: 4
       fail-fast: false
       matrix:
         org: [foot2020, foot2021, foot2022, foot2023, foot2024]
