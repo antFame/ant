@@ -37,7 +37,7 @@ jobs:
       max-parallel: 3
       fail-fast: false
       matrix:
-        org: [foot2020, foot2021]
+        org: [foot2020, foot2021, foot2022, foot2023, foot2024]
         repo: [a, b, c, d, e, f] #, g, h, i, j, k, l, m, "n", o, p, q] #, r, s, t]
 
     runs-on: ubuntu-latest
